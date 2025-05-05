@@ -1,77 +1,95 @@
-import tkinter as tk
+from PyQt5.QtWidgets import (
+    QDialog,
+    QLabel,
+    QTextEdit,
+    QPushButton,
+    QVBoxLayout,
+    QHBoxLayout,
+)
+from PyQt5.QtCore import Qt
+import pyperclip
+from codevoice.llm_refiner import refine_prompt
+from PyQt5.QtWidgets import QApplication
+
+
+class ConfirmationDialog(QDialog):
+    def __init__(self, original: str, refined: str = None):
+        super().__init__()
+        self.original = original
+        self.refined = refined
+        self.setWindowTitle("Prompt Captured")
+        self.setFixedSize(800, 400)
+        self.setStyleSheet("background-color: white;")
+
+        self.init_ui()
+
+    def init_ui(self):
+        layout = QVBoxLayout()
+
+        # 🔧 FIX: always define a prompt to display
+        display_text = (
+            self.refined
+            if (self.refined and self.refined.strip() != self.original.strip())
+            else self.original
+        )
+
+        label = QLabel(
+            "✨ LLM-refined prompt" if self.refined else "✅ Prompt captured"
+        )
+        label.setStyleSheet("font-size: 16px; color: green; font-weight: bold;")
+        layout.addWidget(label)
+
+        self.text_box = QTextEdit()
+        self.text_box.setReadOnly(True)
+        self.text_box.setText(display_text)
+        layout.addWidget(self.text_box)
+
+        # 🔧 Add separator + original only if refined and different
+        if self.refined and self.refined.strip() != self.original.strip():
+            separator = QLabel("🔁 Original spoken input")
+            separator.setStyleSheet("font-size: 13px; color: gray; font-style: italic;")
+            layout.addWidget(separator)
+
+            original_box = QTextEdit()
+            original_box.setReadOnly(True)
+            original_box.setText(self.original)
+            layout.addWidget(original_box)
+
+        # Buttons
+        button_row = QHBoxLayout()
+
+        quit_btn = QPushButton("Quit")
+        quit_btn.setStyleSheet("background-color:#d9534f;color:white;padding:10px;")
+        quit_btn.clicked.connect(lambda: QApplication.instance().quit())
+        button_row.addWidget(quit_btn)
+
+        self.enhance_btn = QPushButton("✨ Enhance using LLM")
+        self.enhance_btn.setStyleSheet(
+            "background-color: orange; color: white; padding: 10px;"
+        )
+        self.enhance_btn.clicked.connect(self.enhance_with_llm)
+        button_row.addWidget(self.enhance_btn)
+
+        continue_btn = QPushButton("Continue")
+        continue_btn.setStyleSheet(
+            "background-color: #4CAF50; color: white; padding: 10px;"
+        )
+        continue_btn.clicked.connect(self.accept)
+        button_row.addWidget(continue_btn)
+
+        layout.addLayout(button_row)
+        self.setLayout(layout)
+
+    def enhance_with_llm(self):
+        print("[confirmation] Enhancing via LLM...")
+        original, refined = refine_prompt(self.original)
+        self.text_box.setText(refined)
+        pyperclip.copy(refined)
+        self.enhance_btn.setDisabled(True)
+        self.enhance_btn.setText("✅ Enhanced and copied")
+        self.refined = refined
 
 
 def show_confirmation(original: str, refined: str = None):
-    # Use existing root or create (but keep it hidden)
-    root = tk._default_root
-    if not root:
-        root = tk.Tk()
-        root.withdraw()
-
-    popup = tk.Toplevel(root)
-    popup.title("Prompt Captured")
-    popup.geometry("800x400+400+200")
-    popup.configure(bg="white")
-    popup.attributes("-topmost", True)
-
-    def close_popup():
-        popup.destroy()
-
-    if refined and original != refined:
-        label = tk.Label(
-            popup,
-            text="✨ LLM-refined prompt",
-            font=("Helvetica", 14, "bold"),
-            bg="white",
-            fg="green",
-        )
-        label.pack(pady=(20, 5))
-
-        refined_box = tk.Text(popup, height=6, wrap="word", font=("Helvetica", 12))
-        refined_box.pack(padx=20, fill="both", expand=True)
-        refined_box.insert("1.0", refined)
-        refined_box.configure(state="disabled")
-
-        separator = tk.Label(
-            popup,
-            text="🔁 Original spoken input",
-            font=("Helvetica", 12, "italic"),
-            bg="white",
-            fg="gray",
-        )
-        separator.pack(pady=(10, 5))
-
-        original_box = tk.Text(popup, height=4, wrap="word", font=("Helvetica", 11))
-        original_box.pack(padx=20, pady=(0, 10), fill="both", expand=False)
-        original_box.insert("1.0", original)
-        original_box.configure(state="disabled")
-    else:
-        label = tk.Label(
-            popup,
-            text="✅ Prompt copied to clipboard",
-            font=("Helvetica", 14),
-            bg="white",
-            fg="green",
-        )
-        label.pack(pady=(20, 10))
-
-        text_box = tk.Text(popup, height=10, wrap="word", font=("Helvetica", 12))
-        text_box.pack(padx=20, pady=(0, 20), fill="both", expand=True)
-        text_box.insert("1.0", original)
-        text_box.configure(state="disabled")
-
-    close_btn = tk.Button(
-        popup,
-        text="Continue",
-        command=close_popup,
-        font=("Helvetica", 12),
-        bg="#4CAF50",
-        fg="white",
-        padx=20,
-        pady=10,
-    )
-    close_btn.pack(pady=10)
-
-    # This keeps only the popup active until user closes it
-    popup.grab_set()
-    popup.wait_window()
+    dialog = ConfirmationDialog(original, refined)
+    dialog.exec_()
