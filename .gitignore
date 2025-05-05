@@ -2,4 +2,12 @@
 *.pyc
 /build
 .env
-*.bin
+*.bin__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+build/
+dist/
+.env
+models/

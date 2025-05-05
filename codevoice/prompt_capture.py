@@ -1,4 +1,10 @@
-from codevoice.config import TRIGGER_PHRASE, END_PHRASE, PHASE1_CHUNK_MS, PHASE2_CHUNK_MS, STT_BACKEND
+from codevoice.config import (
+    TRIGGER_PHRASE,
+    END_PHRASE,
+    PHASE1_CHUNK_MS,
+    PHASE2_CHUNK_MS,
+    STT_BACKEND,
+)
 from codevoice.notifier import play_start_sound, play_done_sound
 from codevoice.overlay import ListeningOverlay
 from rapidfuzz import fuzz
@@ -44,7 +50,9 @@ def capture_prompt():
         play_done_sound()
         overlay.hide()
 
-        full_text = " ".join(spoken).replace(TRIGGER_PHRASE, "").replace(END_PHRASE, "").strip()
+        full_text = (
+            " ".join(spoken).replace(TRIGGER_PHRASE, "").replace(END_PHRASE, "").strip()
+        )
         return full_text
 
     finally:

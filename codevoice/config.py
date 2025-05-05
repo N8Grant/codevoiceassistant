@@ -23,15 +23,14 @@ MODEL_PATH = ensure_model_present()
 START_SOUND = "sounds/start.wav"
 DONE_SOUND = "sounds/done.wav"
 SAMPLE_RATE = 16000
-PHASE1_CHUNK_MS = int(os.getenv("PHASE1_CHUNK_MS", "800"))     # Fast trigger detection
-PHASE2_CHUNK_MS = int(os.getenv("PHASE2_CHUNK_MS", "2000"))    # Full prompt transcription
+PHASE1_CHUNK_MS = int(os.getenv("PHASE1_CHUNK_MS", "800"))  # Fast trigger detection
+PHASE2_CHUNK_MS = int(os.getenv("PHASE2_CHUNK_MS", "2000"))  # Full prompt transcription
 
 
 # Optional prompt refinement
 ENABLE_LLM_REFINEMENT = True
 LLM_PROVIDER = "openai"  # could support other backends later
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-
 
 
 LLM_SYSTEM_PROMPT = """
@@ -54,8 +53,6 @@ Examples of improvement:
 
 Be concise but informative. The output should be a single well-structured prompt.
 """
-
-
 
 
 def download_file(url, out_path):

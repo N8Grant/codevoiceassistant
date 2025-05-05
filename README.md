@@ -46,6 +46,8 @@ OPENAI_API_KEY=your-api-key-here
 LLM_PROVIDER=openai
 ```
 
+---
+
 ## Model Size Guide
 
 | Model     | Size (MB) | Speed    | Accuracy  |
@@ -57,6 +59,8 @@ LLM_PROVIDER=openai
 | large-v3  | \~2.9 GB  | Slowest  | Best      |
 
 Set your model in .env via WHISPER_MODEL.
+
+---
 
 ## Usage
 Run from terminal:
@@ -71,10 +75,14 @@ Speak the trigger phrase (e.g. "start listening") and begin speaking your prompt
 
 Your spoken text will be transcribed, optionally refined by an LLM, and copied to your clipboard. A popup will show the result.
 
+---
+
 ## CLI Options
 ```bash
-codevoice --no-llm
+codevoice <--no-llm>
 ```
+
+---
 
 ## Example Workflow
 1. You say: start listening
@@ -88,9 +96,12 @@ codevoice --no-llm
 
 5. Prompt is copied to clipboard and displayed in a confirmation window.
 
+---
+
 ## License
 MIT License
 
+---
 
 ## Credits
 * [FasterWhisper](https://github.com/guillaumekln/faster-whisper)

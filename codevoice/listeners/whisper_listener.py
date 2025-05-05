@@ -1,11 +1,11 @@
-
 from faster_whisper import WhisperModel
 import pyaudio
 import numpy as np
 
+
 class WhisperListener:
     def __init__(self, model_size="base"):
-        self.model = WhisperModel(model_size, device='cpu')
+        self.model = WhisperModel(model_size, device="cpu")
         self.chunk_ms = 2000  # Default chunk duration (in ms)
         self.rate = 16000
         self.channels = 1
@@ -33,8 +33,12 @@ class WhisperListener:
 
         print("🎙️ Listening...")
         audio_data = self.stream.read(self.chunk_samples)
-        audio_np = np.frombuffer(audio_data, dtype=np.int16).astype(np.float32) / 32768.0
-        segments, _ = self.model.transcribe(audio_np, language="en", beam_size=5,vad_filter=True)
+        audio_np = (
+            np.frombuffer(audio_data, dtype=np.int16).astype(np.float32) / 32768.0
+        )
+        segments, _ = self.model.transcribe(
+            audio_np, language="en", beam_size=5, vad_filter=True
+        )
         return " ".join([segment.text for segment in segments]).strip()
 
     def close(self):

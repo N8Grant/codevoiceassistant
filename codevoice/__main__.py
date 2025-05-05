@@ -8,13 +8,16 @@ from codevoice.confirmation import show_confirmation
 from codevoice.config import ENABLE_LLM_REFINEMENT
 
 import tkinter as tk
+
 tk.Tk().withdraw()
 
+
 def main():
-    parser = argparse.ArgumentParser(description="🎤 Voice-to-clipboard assistant with optional LLM refinement")
+    parser = argparse.ArgumentParser(
+        description="🎤 Voice-to-clipboard assistant with optional LLM refinement"
+    )
     parser.add_argument(
-        "--no-llm", action="store_true",
-        help="Skip LLM-based prompt refinement"
+        "--no-llm", action="store_true", help="Skip LLM-based prompt refinement"
     )
     args = parser.parse_args()
     use_llm = ENABLE_LLM_REFINEMENT and not args.no_llm
@@ -43,6 +46,7 @@ def main():
 
     except KeyboardInterrupt:
         print("\n👋 Exiting CodeVoiceAssistant.")
+
 
 if __name__ == "__main__":
     main()

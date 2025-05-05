@@ -1,5 +1,6 @@
 import tkinter as tk
 
+
 def show_confirmation(original: str, refined: str = None):
     # Use existing root or create (but keep it hidden)
     root = tk._default_root
@@ -17,7 +18,13 @@ def show_confirmation(original: str, refined: str = None):
         popup.destroy()
 
     if refined and original != refined:
-        label = tk.Label(popup, text="✨ LLM-refined prompt", font=("Helvetica", 14, "bold"), bg="white", fg="green")
+        label = tk.Label(
+            popup,
+            text="✨ LLM-refined prompt",
+            font=("Helvetica", 14, "bold"),
+            bg="white",
+            fg="green",
+        )
         label.pack(pady=(20, 5))
 
         refined_box = tk.Text(popup, height=6, wrap="word", font=("Helvetica", 12))
@@ -25,7 +32,13 @@ def show_confirmation(original: str, refined: str = None):
         refined_box.insert("1.0", refined)
         refined_box.configure(state="disabled")
 
-        separator = tk.Label(popup, text="🔁 Original spoken input", font=("Helvetica", 12, "italic"), bg="white", fg="gray")
+        separator = tk.Label(
+            popup,
+            text="🔁 Original spoken input",
+            font=("Helvetica", 12, "italic"),
+            bg="white",
+            fg="gray",
+        )
         separator.pack(pady=(10, 5))
 
         original_box = tk.Text(popup, height=4, wrap="word", font=("Helvetica", 11))
@@ -33,7 +46,13 @@ def show_confirmation(original: str, refined: str = None):
         original_box.insert("1.0", original)
         original_box.configure(state="disabled")
     else:
-        label = tk.Label(popup, text="✅ Prompt copied to clipboard", font=("Helvetica", 14), bg="white", fg="green")
+        label = tk.Label(
+            popup,
+            text="✅ Prompt copied to clipboard",
+            font=("Helvetica", 14),
+            bg="white",
+            fg="green",
+        )
         label.pack(pady=(20, 10))
 
         text_box = tk.Text(popup, height=10, wrap="word", font=("Helvetica", 12))
@@ -41,8 +60,16 @@ def show_confirmation(original: str, refined: str = None):
         text_box.insert("1.0", original)
         text_box.configure(state="disabled")
 
-    close_btn = tk.Button(popup, text="Continue", command=close_popup,
-                          font=("Helvetica", 12), bg="#4CAF50", fg="white", padx=20, pady=10)
+    close_btn = tk.Button(
+        popup,
+        text="Continue",
+        command=close_popup,
+        font=("Helvetica", 12),
+        bg="#4CAF50",
+        fg="white",
+        padx=20,
+        pady=10,
+    )
     close_btn.pack(pady=10)
 
     # This keeps only the popup active until user closes it

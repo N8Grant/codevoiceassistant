@@ -4,16 +4,19 @@ import pyaudio
 from vosk import Model, KaldiRecognizer
 from codevoice.config import MODEL_PATH, SAMPLE_RATE
 
+
 class VoiceListener:
     def __init__(self, model_path=MODEL_PATH, sample_rate=SAMPLE_RATE):
         self.model = Model(model_path)
         self.recognizer = KaldiRecognizer(self.model, sample_rate)
         self.p = pyaudio.PyAudio()
-        self.stream = self.p.open(format=pyaudio.paInt16,
-                                  channels=1,
-                                  rate=sample_rate,
-                                  input=True,
-                                  frames_per_buffer=8000)
+        self.stream = self.p.open(
+            format=pyaudio.paInt16,
+            channels=1,
+            rate=sample_rate,
+            input=True,
+            frames_per_buffer=8000,
+        )
         self.stream.start_stream()
 
     def listen_once(self):

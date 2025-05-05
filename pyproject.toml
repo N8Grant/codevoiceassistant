@@ -1,14 +1,17 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "codevoiceassistant"
 version = "0.1.0"
 description = "A lightweight voice-activated assistant that captures LLM prompts via voice and copies them to your clipboard."
 authors = [
-    { name = "Your Name", email = "you@example.com" }
+    { name = "Nathan Grant" }
 ]
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 license = { text = "MIT" }
-
 dependencies = [
     "vosk",
     "pyaudio",
@@ -20,12 +23,12 @@ dependencies = [
     "numpy",
     "python-dotenv",
     "faster-whisper",
-    "rapidfuzz"
+    "rapidfuzz",
+    "tk"
 ]
 
 [project.scripts]
 codevoice = "codevoice.__main__:main"
 
-[build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta"
+[tool.setuptools]
+packages = ["codevoice"]
